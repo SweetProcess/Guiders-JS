@@ -223,9 +223,15 @@ var guiders = (function($) {
     left += offset[1];
     
     var positionType = "absolute";
+
     // If the element you are attaching to is position: fixed, then we will make the guider
     // position: fixed as well.
-    if (attachTo.css("position") === "fixed" && guiders._fixedOrAbsolute === "fixed") {
+    var isFixed = (
+        attachTo.css("position") === "fixed" ||
+        attachTo.parents().filter(function(i, e) {return $(e).css('position') === 'fixed'}).length > 0
+    );
+
+    if (isFixed && guiders._fixedOrAbsolute === "fixed") {
       positionType = "fixed";
       top -= $(window).scrollTop();
       left -= $(window).scrollLeft();
